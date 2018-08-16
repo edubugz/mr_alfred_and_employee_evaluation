@@ -6,10 +6,12 @@ import java.util.TreeSet;
 
 public class Main {
 
+
     public static String [] calculateBlacklisted(TreeSet n)
     {
-        //string to hold the blacklist
+        //array to hold blacklist and their count
         String [] employees = new String[2];
+        //string to hold the blacklist
         String theList = "";
 
         //count the ones in blacklist
@@ -32,9 +34,11 @@ public class Main {
                 continue;
             }
 
+
             //else check if the (num+seniors)is prime
             for(int i=2;i<extracted;i++)
             {
+
 
               if ((extracted+headSet)%i == 0)
                  {
@@ -72,20 +76,49 @@ public class Main {
 
     public static void main(String[] args)
     {
-        // the user enters the number of employees they want and the maximum rank they want
+        getUserInput();
 
-        Scanner input = new Scanner(System.in);
-
-        System.out.println("enter the number of employees you want");
-
-        int employees = input.nextInt();
-
-        System.out.println("enter the maximum rank you want");
-
-        int maxRank = input.nextInt();
+    }
 
 
+    private static void intChecks(String[] userInput) {
+        TreeSet<Integer> allEmps;
+        try
+        {
+            if ((Integer.parseInt(userInput[0]) == Double.parseDouble(userInput[0])) &&
+                    (Integer.parseInt(userInput[1]) == Double.parseDouble(userInput[1])))
+            {
+                allEmps = prepareTreeSet(userInput);
+                processAndDisplay(allEmps);
 
+            }
+            else
+            {
+                System.out.println("please enter an integer value for both scenarios \n");
+
+                getUserInput();
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("please enter an integer value for both scenarios \n");
+
+            getUserInput();
+        }
+    }
+
+    private static void processAndDisplay(TreeSet<Integer> allEmps) {
+        //show the employess ranks produced
+        System.out.println("List of the employees to be avaluated---> "+allEmps.toString()+"\n");
+
+        //process the ones blacklisted
+        String [] theBlacklist = Main.calculateBlacklisted(allEmps);
+
+        System.out.println("the list of the blacklisted employess ---> "+ theBlacklist[0]);
+        System.out.println("num of employees in the list ---> "+theBlacklist[1]);
+    }
+
+    private static TreeSet<Integer> prepareTreeSet(String [] userInput) {
         //we want to have random ranks for the number of employees specified by the user
         // since math.random can produce duplicates which are not needed as per the question
         // we use a treeset to eliminate them
@@ -94,33 +127,43 @@ public class Main {
         //this is alfred
         rank.add(1);
 
-            while(rank.size() != employees+1)
+        while(rank.size() != Integer.parseInt(userInput[0])+1)
+        {
+            int i = 0;
+
+            int randNum = (int) (Math.random() * Integer.parseInt(userInput[1])) * (i + 1);
+
+
+            if (randNum <= Integer.parseInt(userInput[1]) && randNum > 1)
             {
-                int i = 0;
-
-                int randNum = (int) (Math.random() * maxRank) * (i + 1);
-
-
-                if (randNum <= maxRank && randNum > 1)
-                {
-                    rank.add(randNum);
-
-                }
-
-                i++;
+                rank.add(randNum);
 
             }
 
-            //show the employess ranks produced
-        System.out.println("List of the employees to be avaluated---> "+rank.toString()+"\n");
+            i++;
 
-            //process the ones blacklisted
-        String [] theBlacklist = Main.calculateBlacklisted(rank);
-
-        System.out.println("the list of the blacklisted employess ---> "+ theBlacklist[0]);
-        System.out.println("num of employees in the list --->"+theBlacklist[1]);
+        }
+        return rank;
+    }
 
 
+    private static void getUserInput() {
+
+        // the user enters the number of employees they want and the maximum rank they want
+        Scanner input = new Scanner(System.in);
+
+        String [] userInput = new String[2];
+
+        System.out.println("enter the number of employees you want");
+
+        userInput[0] = input.nextLine();
+
+        System.out.println("enter the maximum rank you want");
+
+        userInput[1] = input.nextLine();
+
+        //input vallidation for processing
+        intChecks(userInput);
     }
 }
 
