@@ -6,9 +6,10 @@ import java.util.TreeSet;
 
 public class Main {
 
-    public static String calculateBlacklisted(TreeSet n)
+    public static String [] calculateBlacklisted(TreeSet n)
     {
         //string to hold the blacklist
+        String [] employees = new String[2];
         String theList = "";
 
         //count the ones in blacklist
@@ -56,14 +57,17 @@ public class Main {
                 //else if count is 0 that means the number is prime
                 //thus add it to theList string
                 //increment the blacklist counter by one
-                theList = theList+" ,"+extracted;
+                theList = theList+"  "+extracted;
                 numOfemp++;
             }
 
         }
 
+        employees[0] = theList;
+        employees[1] = ""+numOfemp;
+
         // return theList and the blacklist counter
-        return "{"+theList+"}"+numOfemp;
+        return employees;
     }
 
     public static void main(String[] args)
@@ -108,10 +112,13 @@ public class Main {
             }
 
             //show the employess ranks produced
-        System.out.println(rank.toString());
+        System.out.println("List of the employees to be avaluated---> "+rank.toString()+"\n");
 
             //process the ones blacklisted
-        System.out.println(Main.calculateBlacklisted(rank));
+        String [] theBlacklist = Main.calculateBlacklisted(rank);
+
+        System.out.println("the list of the blacklisted employess ---> "+ theBlacklist[0]);
+        System.out.println("num of employees in the list --->"+theBlacklist[1]);
 
 
     }
